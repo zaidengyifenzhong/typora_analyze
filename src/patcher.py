@@ -92,14 +92,21 @@ def main(argv: list[str]) -> int:
 
     pre = scan(original)
     print("补丁点检查:")
-    for name, n in pre.items():
-        mark = "✓" if n else "✗"
-        print(f"  {mark} {name}: 命中 {n} 处")
+    for name, old, new in PATCHES:
+        n = pre[name]
+        installed = original.count(new)
+        mark = "✓" if n or installed else "✗"
+        print(f"  {mark} {name}: 待处理 {n} 处，已应用 {installed} 处")
 
-    total = sum(pre.values())
-    if total == 0:
-        print("\n[!] 没有任何命中，可能版本不匹配或已经打过补丁")
+    missing = [name for name, old, new in PATCHES
+               if old not in original and new not in original]
+    if missing:
+        print(f"\n[!] 缺少可识别的补丁特征，拒绝写入: {missing}")
         return 1
+
+    if not any(pre.values()):
+        print("\n已应用全部前端补丁，无需重复写入")
+        return 0
 
     if verify_only:
         print("\n(--verify 模式，未写入)")
