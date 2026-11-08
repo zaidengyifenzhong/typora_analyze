@@ -1,7 +1,5 @@
 # Typora Activator for macOS
 
-用于研究 Typora macOS 客户端许可状态与界面提示的脚本。默认直接修改已安装的应用，不创建备份，不生成另一份 Typora 应用。
-
 ## 使用
 
 需要 macOS、Python 3.9+ 和系统自带的 `codesign`。运行前保存文档并退出 Typora，确保当前用户可写入目标应用。
